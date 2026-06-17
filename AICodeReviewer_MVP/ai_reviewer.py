@@ -10,6 +10,8 @@ def fetch_pr_files():
     github_token = os.getenv("GITHUB_TOKEN")
     repo = os.getenv("GITHUB_REPOSITORY")
     pr_number = os.getenv("PR_NUMBER")
+    openai_api_key = os.getenv("OPENAI_API_KEY")
+    print("OPENAI_API_KEY exists:", bool(os.getenv("OPENAI_API_KEY")), flush=True) 
 
     if not github_token:
         raise ValueError("GITHUB_TOKEN is missing")
@@ -19,6 +21,9 @@ def fetch_pr_files():
 
     if not pr_number:
         raise ValueError("PR_NUMBER is missing")
+    
+    if not openai_api_key:
+        raise ValueError("OPENAI_API_KEY is missing")
 
     url = f"https://api.github.com/repos/{repo}/pulls/{pr_number}/files"
 
@@ -49,14 +54,19 @@ def main():
 
     result = graph.invoke({
         "changed_files": changed_files,
-        "review_comment": ""
+        "added_lines": [],
+        "inline_comments": []
     })
 
     print("=" * 80, flush=True)
-    print("LANGGRAPH AI REVIEW OUTPUT", flush=True)
+    print("AI INLINE COMMENTS OUTPUT", flush=True)
     print("=" * 80, flush=True)
-    print(result["review_comment"], flush=True)
 
+    for comment in result["inline_comments"]:
+        print(f"File: {comment['path']}", flush=True)
+        print(f"Line: {comment['line']}", flush=True)
+        print(f"Comment: {comment['body']}", flush=True)
+        print("-" * 80, flush=True)
 
 if __name__ == "__main__":
     main()
