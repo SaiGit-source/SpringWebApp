@@ -1,4 +1,5 @@
 requests
 python-dotenv
-
+langgraph
+langchain-openai
 
