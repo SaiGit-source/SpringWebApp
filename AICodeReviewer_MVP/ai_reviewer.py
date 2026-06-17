@@ -98,6 +98,10 @@ def main():
     print(f"Changed files count: {len(changed_files)}", flush=True)
 
     graph = build_ai_reviewer_graph()
+    
+    png = graph.get_graph().draw_mermaid_png()
+    with open("ai-reviewer-flow.png", "wb") as f:
+        f.write(png)
 
     result = graph.invoke(
         {
@@ -120,7 +124,11 @@ def main():
     for comment in inline_comments:
         path = comment["path"]
         line = int(comment["line"])
-        body = comment["body"]
+        #body = comment["body"]
+        body = f"""**CodeReviewAgent**
+
+            {comment["body"]}
+            """
 
         print(f"File: {path}", flush=True)
         print(f"Line: {line}", flush=True)
