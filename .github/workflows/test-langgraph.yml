@@ -19,7 +19,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-          pip install -r requirements.txt
+          pip install -r AICodeReviewer_MVP/requirements.txt
 
       - name: Run LangGraph test
         run: |
