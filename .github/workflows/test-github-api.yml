@@ -31,4 +31,5 @@ jobs:
           GITHUB_REPOSITORY: ${{ github.repository }}
           PR_NUMBER: ${{ github.event.pull_request.number }}
         run: |
-          python github_api_test.py
+          python AICodeReviewer_MVP/github_api_test.py
+        
